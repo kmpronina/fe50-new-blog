@@ -1,4 +1,4 @@
-import { BlogPostFromTMS } from '#models/BlogPosts';
+import { BlogPostFromTMS } from "#models/BlogPost";
 
 export type GetPostsFromTMSResponseType = {
   count?: number;
