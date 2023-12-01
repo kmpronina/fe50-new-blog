@@ -23,3 +23,8 @@ export type BlogPostFromTMS = {
   description: string;
   author: number;
 };
+
+export type PostDataType = {
+  data: BlogPostFromTMS[];
+  total: number;
+};
