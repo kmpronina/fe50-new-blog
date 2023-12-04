@@ -1,18 +1,28 @@
-import { AnyAction, Dispatch } from '@reduxjs/toolkit';
-import { GetPostsFromTMSOptionsType } from '#api/services/postServices/types';
-import { getPostsFromTMS } from '#api/services/postServices/postServices';
-import { BlogPostFromTMS } from '#models/BlogPosts';
-import { BlogTMSReducerEnum } from './actionTypes';
+import { AnyAction, Dispatch } from "@reduxjs/toolkit";
+import { GetPostsFromTMSOptionsType } from "#api/services/postServices/types";
+import { getPostsFromTMS } from "#api/services/postServices/postServices";
+import {
+  BlogPostFromTMS,
+  EditPostDialogData,
+  PostDataType,
+} from "#models/BlogPost";
+import { BlogTMSReducerEnum } from "./actionTypes";
 
 export const getBlogPostsToStoreFromTMS = (
   options?: GetPostsFromTMSOptionsType
 ) => {
   return async (dispatch: Dispatch<AnyAction>) => {
     dispatch(setIsLoadingStatusFromTMS(true));
-    const dataPosts = await getPostsFromTMS(options);
-    if (dataPosts === undefined) return;
+    const data = await getPostsFromTMS(options);
+    if (!data) return;
+    const { results, count } = data;
 
-    dispatch(setBlogPostsToStoreFromTMS(dataPosts || []));
+    dispatch(
+      setBlogPostsWithCountToStoreFromTMS({
+        data: results || [],
+        total: count || 0,
+      })
+    );
 
     dispatch(setIsLoadingStatusFromTMS(false));
   };
@@ -22,6 +32,13 @@ export const setBlogPostsToStoreFromTMS = (posts: BlogPostFromTMS[]) => {
   return {
     type: BlogTMSReducerEnum.SET_BLOG_POSTS_TMS,
     posts,
+  };
+};
+
+export const setBlogPostsWithCountToStoreFromTMS = (data: PostDataType) => {
+  return {
+    type: BlogTMSReducerEnum.SET_BLOG_POSTS_WITH_COUNT_TMS,
+    data,
   };
 };
 
@@ -43,5 +60,21 @@ export const setSearchStringToStoreFromTMS = (newSearchString: string) => {
   return {
     type: BlogTMSReducerEnum.SET_SEARCH_STRING_TMS,
     newSearchString,
+  };
+};
+
+export const setEditPostDialogDataFromTMS = (
+  editPostForDialog: BlogPostFromTMS | null
+) => {
+  return {
+    type: BlogTMSReducerEnum.SET_EDIT_POST_DIALOG_DATA,
+    editPostForDialog,
+  };
+};
+
+export const setAuthors = (newAuthors: string[]) => {
+  return {
+    type: BlogTMSReducerEnum.SET_AUTHORS,
+    authors: newAuthors,
   };
 };

@@ -1,19 +1,23 @@
-import { BlogPostFromTMS } from '#models/BlogPosts';
-import { Reducer } from '@reduxjs/toolkit';
-import { BlogTMSReducerEnum } from './actionTypes';
+import { Reducer } from "@reduxjs/toolkit";
+import { BlogPostFromTMS, PostDataType } from "#models/BlogPost";
+import { BlogTMSReducerEnum } from "./actionTypes";
 
 type BlogTMSReducerType = {
-  posts: BlogPostFromTMS[];
+  posts: PostDataType;
   isLoading: boolean;
   searchString: string;
   activePost: BlogPostFromTMS | null;
+  editPostForDialog: BlogPostFromTMS | null;
+  authors: string[];
 };
 
 const defState: BlogTMSReducerType = {
-  posts: [],
+  posts: { data: [], total: 0 },
   isLoading: false,
-  searchString: '',
+  searchString: "",
   activePost: null,
+  editPostForDialog: null,
+  authors: [],
 };
 
 const blogTMSReducer: Reducer<BlogTMSReducerType> = (
@@ -24,7 +28,9 @@ const blogTMSReducer: Reducer<BlogTMSReducerType> = (
     case BlogTMSReducerEnum.SET_BLOG_USERS_TMS:
       return { ...state, users: action.users };
     case BlogTMSReducerEnum.SET_BLOG_POSTS_TMS:
-      return { ...state, posts: action.posts };
+      return { ...state, posts: { ...state.posts, data: action.posts } };
+    case BlogTMSReducerEnum.SET_BLOG_POSTS_WITH_COUNT_TMS:
+      return { ...state, posts: action.data };
     case BlogTMSReducerEnum.SET_SELECTED_BLOG_USER_ID_TMS:
       return { ...state, selectedUserId: action.selectedUserId };
     case BlogTMSReducerEnum.SET_COMMENTS_MODAL_STATUS_TMS:
@@ -37,6 +43,11 @@ const blogTMSReducer: Reducer<BlogTMSReducerType> = (
       return { ...state, comments: action.comments };
     case BlogTMSReducerEnum.SET_ACTIVE_POST_TMS:
       return { ...state, activePost: action.activePost };
+    case BlogTMSReducerEnum.SET_EDIT_POST_DIALOG_DATA:
+      return { ...state, editPostForDialog: action.editPostForDialog };
+    case BlogTMSReducerEnum.SET_AUTHORS:
+      return { ...state, authors: action.authors };
+
     default:
       return { ...state };
   }

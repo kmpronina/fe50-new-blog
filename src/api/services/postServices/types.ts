@@ -1,4 +1,4 @@
-import { BlogPostFromTMS } from '#models/BlogPosts';
+import { BlogPostFromTMS } from "#models/BlogPost";
 
 export type GetPostsFromTMSResponseType = {
   count?: number;
@@ -21,4 +21,15 @@ export type GetPostsFromTMSOptionsType = {
   offset?: number;
   ordering?: string;
   search?: string;
+};
+
+export type EditPostDataType = {
+  image: string;
+  text: string;
+  lesson_num: number;
+  title: string;
+  description: string;
+  author: string;
+  date: string;
+  id: number;
 };

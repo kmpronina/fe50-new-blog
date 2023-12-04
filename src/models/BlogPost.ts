@@ -23,3 +23,13 @@ export type BlogPostFromTMS = {
   description: string;
   author: number;
 };
+
+export type PostDataType = {
+  data: BlogPostFromTMS[];
+  total: number;
+};
+
+export type EditPostDialogData = {
+  data: BlogPostFromTMS | null;
+  isOpenDialogStatus: boolean;
+};
