@@ -22,6 +22,7 @@ import {
   setDrawerClose,
 } from "#store/reducers/drawerReducer/actions";
 import ThemeController from "#components/themeController";
+import PostSearch from "#components/postSearch";
 
 interface Props extends PropsWithChildren {
   title?: string;
@@ -73,6 +74,7 @@ const ContentWithDrawer: React.FC<Props> = (props) => {
             {title}
           </Typography>
           <Box sx={{ display: "flex", alignItems: "center", gap: "15px" }}>
+            <PostSearch />
             <Typography sx={{ color: titleColor }}>
               {user && user.email}
             </Typography>
@@ -82,7 +84,7 @@ const ContentWithDrawer: React.FC<Props> = (props) => {
       </AppBar>
       <Drawer anchor={"left"} open={isOpen} onClose={handleCloseDrawer}>
         <List sx={{ background: cardBgColor, color: titleColor }}>
-          <ListItem>
+          <ListItem key={"menuListItem-1"}>
             <ListItemButton
               onClick={() =>
                 handleNavigateToRoute(RouterLocationsEnum.blogPage)
@@ -94,6 +96,9 @@ const ContentWithDrawer: React.FC<Props> = (props) => {
               <ListItemText>Blog</ListItemText>
             </ListItemButton>
           </ListItem>
+          {/* <ListItem key={"menuListItem-2"}></ListItem> */}
+          {/* <ListItem key={"menuListItem-3"}></ListItem> */}
+          {/* <ListItem key={"menuListItem-4"}></ListItem> */}
         </List>
       </Drawer>
       <Box

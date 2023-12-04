@@ -1,5 +1,5 @@
-import { BlogPostFromTMS, PostDataType } from "#models/BlogPost";
 import { Reducer } from "@reduxjs/toolkit";
+import { BlogPostFromTMS, PostDataType } from "#models/BlogPost";
 import { BlogTMSReducerEnum } from "./actionTypes";
 
 type BlogTMSReducerType = {
@@ -7,6 +7,8 @@ type BlogTMSReducerType = {
   isLoading: boolean;
   searchString: string;
   activePost: BlogPostFromTMS | null;
+  editPostForDialog: BlogPostFromTMS | null;
+  authors: string[];
 };
 
 const defState: BlogTMSReducerType = {
@@ -14,6 +16,8 @@ const defState: BlogTMSReducerType = {
   isLoading: false,
   searchString: "",
   activePost: null,
+  editPostForDialog: null,
+  authors: [],
 };
 
 const blogTMSReducer: Reducer<BlogTMSReducerType> = (
@@ -39,6 +43,11 @@ const blogTMSReducer: Reducer<BlogTMSReducerType> = (
       return { ...state, comments: action.comments };
     case BlogTMSReducerEnum.SET_ACTIVE_POST_TMS:
       return { ...state, activePost: action.activePost };
+    case BlogTMSReducerEnum.SET_EDIT_POST_DIALOG_DATA:
+      return { ...state, editPostForDialog: action.editPostForDialog };
+    case BlogTMSReducerEnum.SET_AUTHORS:
+      return { ...state, authors: action.authors };
+
     default:
       return { ...state };
   }

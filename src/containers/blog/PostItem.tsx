@@ -1,7 +1,10 @@
 import React from "react";
-import { Box, Paper, Typography } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { Box, IconButton, Paper, Typography } from "@mui/material";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
 import { BlogPostFromTMS } from "#models/BlogPost";
 import useThemeColors from "#hooks/useThemeColors";
+import { setEditPostDialogDataFromTMS } from "#store/reducers/blogTMSReducer/actions";
 
 interface Props {
   post: BlogPostFromTMS;
@@ -9,8 +12,13 @@ interface Props {
 
 const PostItem: React.FC<Props> = (props) => {
   const { post } = props;
+  const dispatch = useDispatch();
 
   const { cardBgColor, textColor, titleColor } = useThemeColors();
+
+  const handleOpenEditDialog = () => {
+    dispatch(setEditPostDialogDataFromTMS(post));
+  };
 
   return (
     <Paper
@@ -31,12 +39,30 @@ const PostItem: React.FC<Props> = (props) => {
           />
         </Box>
         <Box sx={{ width: "50%" }}>
-          <Typography
-            variant="h5"
-            sx={{ marginBottom: "20px", color: titleColor, transition: "0.2s" }}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "20px",
+            }}
           >
-            {post.title}
-          </Typography>
+            <Typography
+              variant="h5"
+              sx={{
+                color: titleColor,
+                transition: "0.2s",
+              }}
+            >
+              {post.title}
+            </Typography>
+            <IconButton
+              sx={{ color: textColor, transition: "0.2s" }}
+              onClick={handleOpenEditDialog}
+            >
+              <BorderColorIcon />
+            </IconButton>
+          </Box>
           <Typography
             variant="h6"
             sx={{ color: textColor, transition: "0.2s" }}

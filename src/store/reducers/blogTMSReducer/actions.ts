@@ -1,7 +1,11 @@
 import { AnyAction, Dispatch } from "@reduxjs/toolkit";
 import { GetPostsFromTMSOptionsType } from "#api/services/postServices/types";
 import { getPostsFromTMS } from "#api/services/postServices/postServices";
-import { BlogPostFromTMS, PostDataType } from "#models/BlogPost";
+import {
+  BlogPostFromTMS,
+  EditPostDialogData,
+  PostDataType,
+} from "#models/BlogPost";
 import { BlogTMSReducerEnum } from "./actionTypes";
 
 export const getBlogPostsToStoreFromTMS = (
@@ -56,5 +60,21 @@ export const setSearchStringToStoreFromTMS = (newSearchString: string) => {
   return {
     type: BlogTMSReducerEnum.SET_SEARCH_STRING_TMS,
     newSearchString,
+  };
+};
+
+export const setEditPostDialogDataFromTMS = (
+  editPostForDialog: BlogPostFromTMS | null
+) => {
+  return {
+    type: BlogTMSReducerEnum.SET_EDIT_POST_DIALOG_DATA,
+    editPostForDialog,
+  };
+};
+
+export const setAuthors = (newAuthors: string[]) => {
+  return {
+    type: BlogTMSReducerEnum.SET_AUTHORS,
+    authors: newAuthors,
   };
 };

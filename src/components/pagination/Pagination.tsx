@@ -64,6 +64,7 @@ const Pagination: React.FC<Props> = (props) => {
 
         {Array.from({ length: TotalCountOfPages }).map((_, index) => (
           <ListItem
+            key={index}
             sx={{
               display:
                 index === 0 ||

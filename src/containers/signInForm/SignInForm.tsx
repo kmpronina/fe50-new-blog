@@ -18,6 +18,7 @@ import {
 import { signInValidationSchema } from "./singInValidationSchema";
 import { SignInDataType } from "./types";
 import useThemeColors from "#hooks/useThemeColors";
+import FormInput from "#components/input";
 
 const isLoginFailure = (
   loginData: LoginReturnType
@@ -101,7 +102,6 @@ const SignInForm: React.FC = () => {
   const textfieldStyle = {
     width: "100%",
     backgroundColor: inputBgColor,
-    color: "green",
     transition: "0.2s",
     borderRadius: "3px",
     "$:active": {

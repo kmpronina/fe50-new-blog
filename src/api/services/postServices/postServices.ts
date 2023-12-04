@@ -1,10 +1,12 @@
-import { baseUrl } from "#constants/baseUrl";
+// import { baseUrl } from "#constants/baseUrl";
+import { AuthMethodsReturnType } from "#hooks/useAuth";
 import { UserReducerEnum } from "#store/reducers/userReducer/actionTypes";
 import { store } from "#store/store";
 import { getLocalStorageWithTime } from "#utils/addTimeToExpireToStorage";
 import { refresh } from "#utils/refreshAuthToken";
 import {
   CreatePostDataType,
+  EditPostDataType,
   GetPostsFromTMSOptionsType,
   GetPostsFromTMSResponseType,
 } from "./types";
@@ -57,22 +59,39 @@ export const getPostsFromTMS = async (
   return data;
 };
 
-export const createPostFromTMS = async (createPostData: CreatePostDataType) => {
+export const createPostFromTMS = async (
+  createPostData: CreatePostDataType
+): Promise<AuthMethodsReturnType> => {
   let authToken = getLocalStorageWithTime("authToken");
   if (authToken === false) {
     const response = await refresh();
     if (!response) {
       store.dispatch({ type: UserReducerEnum.LOGOUT_BY_REFRESH });
-      return false;
+      return { isSuccess: false };
     }
   }
 
   authToken = getLocalStorageWithTime("authToken");
+
+  const { title, image, description, lesson_num, text } = createPostData;
+  const formData = new FormData();
+  formData.append("image", image);
+  formData.append("text", text);
+  formData.append("lesson_num", String(lesson_num));
+  formData.append("title", title);
+  formData.append("description", description);
+
   const rawData = await fetch(`https://studapi.teachmeskills.by/blog/posts/`, {
     method: "POST",
-    body: JSON.stringify(createPostData),
+    body: formData,
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
   });
-  return await rawData.json();
+  if (!rawData.ok) {
+    return { isSuccess: false };
+  }
+  return await { isSuccess: true, data: rawData.json() };
 };
 
 export const generateImage = async () => {
@@ -89,4 +108,45 @@ export const generateImage = async () => {
 
   const rawData = await fetch("https://random.imagecdn.app/150/150");
   return await rawData.blob();
+};
+
+export const editPostFromTMS = async (
+  editPostData: EditPostDataType
+): Promise<AuthMethodsReturnType> => {
+  let authToken = getLocalStorageWithTime("authToken");
+  if (authToken === false) {
+    const response = await refresh();
+    if (!response) {
+      store.dispatch({ type: UserReducerEnum.LOGOUT_BY_REFRESH });
+      return { isSuccess: false };
+    }
+  }
+
+  authToken = getLocalStorageWithTime("authToken");
+
+  const { title, image, description, lesson_num, text, id, author, date } =
+    editPostData;
+  const formData = new FormData();
+  formData.append("image", image);
+  formData.append("text", text);
+  formData.append("lesson_num", String(lesson_num));
+  formData.append("title", title);
+  formData.append("description", description);
+  formData.append("author", author);
+  formData.append("date", date);
+
+  const rawData = await fetch(
+    `https://studapi.teachmeskills.by/blog/posts/${id}`,
+    {
+      method: "PATCH",
+      body: formData,
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    }
+  );
+  if (!rawData.ok) {
+    return { isSuccess: false };
+  }
+  return await { isSuccess: true, data: rawData.json() };
 };

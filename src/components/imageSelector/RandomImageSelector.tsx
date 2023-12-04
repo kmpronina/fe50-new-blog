@@ -7,7 +7,7 @@ interface Props {
   onChange: (newValue: string | null) => void;
 }
 
-const ImageSelector: React.FC<Props> = (props) => {
+const RandomImageSelector: React.FC<Props> = (props) => {
   const { value, onChange } = props;
   const handleChangeImage = async () => {
     const newData = await generateImage();
@@ -28,7 +28,11 @@ const ImageSelector: React.FC<Props> = (props) => {
       onClick={handleChangeImage}
     >
       {value ? (
-        <img style={{ width: "100%", height: "100%" }} src={value} />
+        <img
+          style={{ width: "100%", height: "100%" }}
+          src={value}
+          alt={"random pic"}
+        />
       ) : (
         `${"Click to select img"}`
       )}
@@ -36,4 +40,4 @@ const ImageSelector: React.FC<Props> = (props) => {
   );
 };
 
-export default ImageSelector;
+export default RandomImageSelector;

@@ -28,3 +28,8 @@ export type PostDataType = {
   data: BlogPostFromTMS[];
   total: number;
 };
+
+export type EditPostDialogData = {
+  data: BlogPostFromTMS | null;
+  isOpenDialogStatus: boolean;
+};

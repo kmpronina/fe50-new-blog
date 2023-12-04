@@ -1,9 +1,9 @@
-import { SignUpDataType } from '#api/services/authService/types';
+import { SignUpDataType } from "#api/services/authService/types";
 // import {
 //   getLocalStorageWithTime,
 //   setLocalStorageWithTime,
 // } from '#utils/addTimeToExpireToStorage';
-import { signUp } from '#api/services/authService/authService';
+import { signUp } from "#api/services/authService/authService";
 
 // type UserDataHash = {
 //   loginHash: string;
@@ -13,6 +13,7 @@ import { signUp } from '#api/services/authService/authService';
 export type AuthMethodsReturnType = {
   isSuccess: boolean;
   error?: string;
+  data?: unknown;
 };
 
 // const signUpLocal = ({
@@ -37,12 +38,12 @@ const useAuth = () => {
 
     return {
       isSuccess: !(responseData.id === undefined),
-      error: responseData.id === undefined ? 'error' : undefined,
+      error: responseData.id === undefined ? "error" : undefined,
     };
   };
 
   const login = (data: SignUpDataType): AuthMethodsReturnType => {
-    return { isSuccess: false, error: 'user not found' };
+    return { isSuccess: false, error: "user not found" };
   };
   return { login, register };
 };
